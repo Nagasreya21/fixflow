@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FixFlow · Maintenance Desk</title>
+<link rel="stylesheet" href="style.css">
+<script src="app.js" defer></script>
+</head>
+<body>
+<header><div><span class="brand">FIXFLOW</span><span class="tag">LOCAL PORTFOLIO DEMO</span></div></header>
+<main>
+  <div class="intro">
+    <h1>Maintenance desk</h1>
+    <p>Report a repair, assign a technician, and follow the work through to resolution.</p>
+  </div>
+  <div class="grid">
+    <section>
+      <h2>Report a problem</h2>
+      <form id="report">
+        <label for="title">What needs fixing?</label>
+        <input id="title" maxlength="120" placeholder="Example: Pipe leaking under sink" required>
+        <label for="category">Category</label>
+        <select id="category">
+          <option value="WATER_LEAK">Water leak</option>
+          <option value="POWER_OUTAGE">Power outage</option>
+          <option value="APPLIANCE">Appliance</option>
+          <option value="OTHER">Other</option>
+        </select>
+        <button type="submit">Submit request</button>
+      </form>
+    </section>
+    <section>
+      <h2>Manager queue</h2>
+      <p class="muted">Urgent requests appear first. Select a ticket to open it.</p>
+      <ul id="tickets"></ul>
+    </section>
+  </div>
+  <p id="feedback" role="status"></p>
+  <section id="detail" hidden>
+    <h2 id="ticket-title"></h2>
+    <p id="ticket-info"></p>
+    <form id="assign" hidden>
+      <label for="tech">Technician name</label>
+      <input id="tech" maxlength="80" required>
+      <button type="submit">Assign technician</button>
+    </form>
+    <button type="button" id="advance" hidden></button>
+    <div class="grid detail-grid">
+      <div><h3>Repair timeline</h3><ol id="timeline"></ol></div>
+      <div>
+        <h3>Resident notifications</h3>
+        <button id="refresh" type="button" class="secondary">Refresh updates</button>
+        <p id="notification-info" class="muted" role="status"></p>
+        <ol id="notifications"></ol>
+      </div>
+    </div>
+  </section>
+</main>
+</body>
+</html>

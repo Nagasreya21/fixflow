@@ -1,0 +1,61 @@
+x-app: &app
+  depends_on:
+    postgres:
+      condition: service_healthy
+    rabbitmq:
+      condition: service_healthy
+x-env: &env
+  SPRING_DATASOURCE_USERNAME: fixflow
+  SPRING_DATASOURCE_PASSWORD: fixflow-demo
+  SPRING_RABBITMQ_HOST: rabbitmq
+  SPRING_RABBITMQ_USERNAME: fixflow
+  SPRING_RABBITMQ_PASSWORD: fixflow-demo
+
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: fixflow
+      POSTGRES_USER: fixflow
+      POSTGRES_PASSWORD: fixflow-demo
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fixflow -d fixflow"]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+  rabbitmq:
+    image: rabbitmq:4-management
+    environment:
+      RABBITMQ_DEFAULT_USER: fixflow
+      RABBITMQ_DEFAULT_PASS: fixflow-demo
+    ports: ["127.0.0.1:15672:15672"]
+    volumes:
+      - rabbit-data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+  request-service:
+    <<: *app
+    build:
+      context: .
+      args: {SERVICE: request-service}
+    environment:
+      <<: *env
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/fixflow
+    ports: ["127.0.0.1:8080:8080"]
+  notification-service:
+    <<: *app
+    build:
+      context: .
+      args: {SERVICE: notification-service}
+    environment:
+      <<: *env
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/fixflow
+    ports: ["127.0.0.1:8081:8080"]
+volumes:
+  postgres-data:
+  rabbit-data:
