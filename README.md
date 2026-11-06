@@ -4,6 +4,17 @@ FixFlow is a Java portfolio project for tracking apartment repairs. A resident r
 
 **Java 21 · Spring Boot · PostgreSQL · RabbitMQ · Docker Compose**
 
+## Demo
+
+### Report a repair and view the manager queue
+
+![FixFlow maintenance desk with the request form and manager queue](docs/fixflow-desk.png)
+
+### Follow a repair through resolution
+
+![Resolved FixFlow ticket with the repair timeline and resident notifications](docs/fixflow-demo.png)
+
+
 ## Run it
 
 Start Docker Desktop in Linux container mode, then run this from the folder containing `compose.yaml`:
